@@ -1,0 +1,1 @@
+COMBINE_CHARTS = 'combine_charts'
