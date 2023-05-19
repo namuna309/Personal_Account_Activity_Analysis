@@ -26,18 +26,23 @@ class InstagramCrawler:
         # 로그인 메서드
         self.driver.get("https://instagram.com")
         time.sleep(1)
-        
-        id_input = self.driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input')
-        ActionChains(self.driver).send_keys_to_element(id_input, self.username).perform()
+
+        id_input = self.driver.find_element(
+            By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input')
+        ActionChains(self.driver).send_keys_to_element(
+            id_input, self.username).perform()
         time.sleep(0.5)
 
-        password_input = self.driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
-        ActionChains(self.driver).send_keys_to_element(password_input, self.password).perform()
+        password_input = self.driver.find_element(
+            By.XPATH, '//*[@id="loginForm"]/div/div[2]/div/label/input')
+        ActionChains(self.driver).send_keys_to_element(
+            password_input, self.password).perform()
         time.sleep(1)
 
-        login_button = self.driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
+        login_button = self.driver.find_element(
+            By.XPATH, '//*[@id="loginForm"]/div/div[3]/button')
         ActionChains(self.driver).click(login_button).perform()
-        time.sleep(3)        
+        time.sleep(3)
 
     def crawl_data(self):
         # 데이터 크롤링 메서드
@@ -62,33 +67,36 @@ class InstagramCrawler:
                     like = data[0].text
                     comment = 0
                     comments.append(comment)
-                    if ',' in like :
+                    if ',' in like:
                         like = like.replace(',', '')
                     if 'K' in like:
                         likes.append(int(float(like.replace('K', '')) * 1000))
-                    elif 'M' in like :
-                        likes.append(int(float(like.replace('M', '')) * 1000000))
+                    elif 'M' in like:
+                        likes.append(
+                            int(float(like.replace('M', '')) * 1000000))
                     else:
                         likes.append(int(like))
-                else :
+                else:
                     like = 0
                     comment = data[0].text
                     likes.append(like)
-                    if ',' in comment :
+                    if ',' in comment:
                         comment = comment.replace(',', '')
                     if 'K' in comment:
-                        comments.append(int(float(comment.replace('K', '')) * 1000))
+                        comments.append(
+                            int(float(comment.replace('K', '')) * 1000))
                     elif 'M' in comment:
-                        comments.append(int(float(comment.replace('M', '')) * 1000000))
+                        comments.append(
+                            int(float(comment.replace('M', '')) * 1000000))
                     else:
                         comments.append(int(comment))
             elif len(data) == 0:
                 likes.append(0)
                 comments.append(0)
-            else :
+            else:
                 like = data[0].text
                 comment = data[1].text
-                if ',' in like :
+                if ',' in like:
                     like = like.replace(',', '')
                 if 'K' in like:
                     likes.append(int(float(like.replace('K', '')) * 1000))
@@ -96,18 +104,20 @@ class InstagramCrawler:
                     likes.append(int(float(like.replace('M', '')) * 1000000))
                 else:
                     likes.append(int(like))
-            
-                if ',' in comment :
+
+                if ',' in comment:
                     comment = comment.replace(',', '')
                 if 'K' in comment:
-                    comments.append(int(float(comment.replace('K', '')) * 1000))
+                    comments.append(
+                        int(float(comment.replace('K', '')) * 1000))
                 elif 'M' in comment:
-                    comments.append(int(float(like.replace('M', '')) * 1000000))
+                    comments.append(
+                        int(float(like.replace('M', '')) * 1000000))
                 else:
                     comments.append(int(comment))
 
             ActionChains(self.driver).click(content).perform()
-            time.sleep(0.5)    
+            time.sleep(0.5)
 
             urls.append(self.driver.current_url)
             try:
@@ -121,38 +131,29 @@ class InstagramCrawler:
             datetimes.append(datetime_data.get_attribute('datetime'))
             hash_data = self.driver.find_element(By.CLASS_NAME, '_a9zs')
             hashtag_text = ''
-            try :
+            try:
                 hashtags_data = hash_data.find_elements(By.TAG_NAME, 'a')
                 for hashtag_data in hashtags_data:
-                    if '@' in hashtag_data.text :
+                    if '@' in hashtag_data.text:
                         continue
                     hashtag_text += hashtag_data.text + ' '
             except NoSuchElementException as e:
                 hashtags.append(' ')
-            else :
+            else:
                 hashtags.append(hashtag_text[:-1])
             time.sleep(1)
-            webdriver.ActionChains(self.driver).send_keys(Keys.ESCAPE).perform()
-        
+            webdriver.ActionChains(self.driver).send_keys(
+                Keys.ESCAPE).perform()
+
+        print(likes)
+        print(comments)
+        print(hashtags)
+        print(datetimes)
+        print(slide)
+        print(urls)
+
         return likes, comments, hashtags, datetimes, slide, urls
 
     def quit(self):
         # 브라우저 종료
         self.driver.quit()
-
-# if __name__ == "__main__":
-#     # 인스턴스 생성 및 실행
-#     username = "namuna_crawl"
-#     password = "dbsdk309!"
-#     crawler = InstagramCrawler(username, password)
-#     crawler.login()
-#     likes, comments, hashtags, datetimes, slide, urls = crawler.crawl_data()
-#     crawler.quit()
-    
-#     # 결과 출력
-#     print("Likes:", likes)
-#     print("Comments:", comments)
-#     print("Hashtags:", hashtags)
-#     print("Datetimes:", datetimes)
-#     print("Slide:", slide)
-#     print("Urls:", urls)

@@ -1,1 +1,36 @@
-<h1>hello world</h1>
+<html>
+  <head>
+    <link href=http://cdn.pydata.org/bokeh/release/bokeh-3.1.1.min.css "
+    rel=”stylesheet” type=”text/css”> <link
+    href=”http://cdn.pydata.org/bokeh/release/bokeh-widgets-3.1.1.min.css"
+    rel=”stylesheet” type=”text/css”>
+    <style>
+      .chart-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+      }
+
+      .chart {
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chart-container">
+      <div class="chart">{{div1| safe}}</div>
+      <div class="chart">{{div2| safe}}</div>
+      <div class="chart">{{div6| safe}}</div>
+      <div class="chart">{{div3| safe}}</div>
+      <div class="chart">{{div4| safe}}</div>
+      <div class="chart">{{div5| safe}}</div>
+    </div>
+  </body>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.1.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.1.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.1.1.min.js"></script>
+  <script src="https://cdn.bokeh.org/bokeh/release/bokeh-api-3.1.1.min.js"></script>
+  {{script1| safe}} {{script2| safe}} {{script6| safe}} {{script3| safe}}
+  {{script4| safe}} {{script5| safe}}
+</html>
