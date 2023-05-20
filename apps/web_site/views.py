@@ -4,43 +4,37 @@ from bokeh.embed import components
 # Create your views here.
 
 
+class ChartManager:
+    def __init__(self):
+        self.charts = []
+
+    def add_chart(self, chart):
+        self.charts.append(chart)
+
+    def generate_scripts_and_divs(self):
+        scripts = []
+        divs = []
+        for chart in self.charts:
+            script, div = components(chart.run())
+            scripts.append(script)
+            divs.append(div)
+        return scripts, divs
+
+
 def combine_charts(request):
-    top10_chart = Top10Chart()
-    pie_chart = top10_chart.run()
+    chart_manager = ChartManager()
 
-    slide_comp_chart = SlideCompBarChart()
-    bar_chart = slide_comp_chart.run()
+    chart_manager.add_chart(Top10Chart())
+    chart_manager.add_chart(SlideCompBarChart())
+    chart_manager.add_chart(HashtagBoxPlot())
+    chart_manager.add_chart(TimeLineChart(data_type='contents'))
+    chart_manager.add_chart(TimeLineChart(data_type='likes'))
+    chart_manager.add_chart(TimeLineChart(data_type='comments'))
 
-    time_contents_line_chart = TimeLineChart(data_type='contents')
-    line_chart1 = time_contents_line_chart.run()
-    time_likes_line_chart = TimeLineChart(data_type='likes')
-    line_chart2 = time_likes_line_chart.run()
-    time_comments_line_chart = TimeLineChart(data_type='comments')
-    line_chart3 = time_comments_line_chart.run()
-
-    hashtag_box_chart = HashtagBoxPlot()
-    box_chart = hashtag_box_chart.run()
-
-    script1, div1 = components(pie_chart)
-    script2, div2 = components(bar_chart)
-    script3, div3 = components(line_chart1)
-    script4, div4 = components(line_chart2)
-    script5, div5 = components(line_chart3)
-    script6, div6 = components(box_chart)
+    scripts, divs = chart_manager.generate_scripts_and_divs()
 
     context = {
-        'script1': script1,
-        'div1': div1,
-        'script2': script2,
-        'div2': div2,
-        'script3': script3,
-        'div3': div3,
-        'script4': script4,
-        'div4': div4,
-        'script5': script5,
-        'div5': div5,
-        'script6': script6,
-        'div6': div6,
-
+        'scripts': scripts,
+        'divs': divs,
     }
     return render(request, 'web_site/combine_charts.html', context)

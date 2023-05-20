@@ -19,18 +19,14 @@
   </head>
   <body>
     <div class="chart-container">
-      <div class="chart">{{div1| safe}}</div>
-      <div class="chart">{{div2| safe}}</div>
-      <div class="chart">{{div6| safe}}</div>
-      <div class="chart">{{div3| safe}}</div>
-      <div class="chart">{{div4| safe}}</div>
-      <div class="chart">{{div5| safe}}</div>
+      {% for div in divs %}
+      <div class="chart">{{div| safe}}</div>
+      {% endfor %}
     </div>
   </body>
   <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.1.1.min.js"></script>
   <script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.1.1.min.js"></script>
   <script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.1.1.min.js"></script>
   <script src="https://cdn.bokeh.org/bokeh/release/bokeh-api-3.1.1.min.js"></script>
-  {{script1| safe}} {{script2| safe}} {{script6| safe}} {{script3| safe}}
-  {{script4| safe}} {{script5| safe}}
+  {% for script in scripts %}{{script| safe}} {% endfor %}
 </html>
